@@ -13,8 +13,7 @@ all: $(SERVICES:.service.in=.service)
 %.service: %.service.in Makefile
 	sed -e 's^\@BINDIR\@^$(bindir)^g' < $< > $@
 
-install: 
-	all
+install: all
 	$(INSTALL) -pD -m400 pwd.sh $(bindir)/pwd-force-locker
 	$(INSTALL) -pD -m400 pwd-force-locker.service $(libdir)/systemd/system
 
