@@ -1,10 +1,10 @@
 [Unit]
-Description=Forcefully sets passwords expired.
+Description=Makes fsarchiver backup of entire system.
 DefaultDependencies=no
 
 [Service]
 Type=oneshot
-ExecStart=@bindir@/pwd-force-locker
+ExecStart=@bindir@/fsarchiver-backup
 
 [Install]
 WantedBy=shutdown.target reboot.target
