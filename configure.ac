@@ -5,7 +5,7 @@
 AC_INIT(sbs-scripts, 0.1, ria.freelander@gmail.com)
 AM_INIT_AUTOMAKE([-Wall foreign subdir-objects no-dist-gzip dist-xz])
 # Checks for programs.
-AM_PATH_PYTHON([2.7])
+AC_PATH_PROG(PYTHON,python2)
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 

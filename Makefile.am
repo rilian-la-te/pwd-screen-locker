@@ -6,7 +6,6 @@ if HAVE_SYSTEMD
 systemdsystemunit_DATA = \
         pwd-force-locker.service \
         fsarchiver-backup.service \
-        pwd-force-locker.timer \
         fsarchiver-backup.timer
 endif
 
