@@ -1,5 +1,5 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 
-import ConfigParser
+import configparser
 
 
