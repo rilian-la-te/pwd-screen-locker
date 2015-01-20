@@ -7,3 +7,8 @@ systemdsystemunit_DATA = \
         pwd-force-locker.service \
         fsarchiver-backup.service
 endif
+
+CLEANFILES = pwd-force-locker.service
+        fsarchiver-backup.service
+        fsarchiver-backup
+        fsarchiver-backup.ini
