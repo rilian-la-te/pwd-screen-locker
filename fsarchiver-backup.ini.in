@@ -1,0 +1,23 @@
+[backup-dir-settings]
+save-directory = @sharedstatedir@/шашаша
+save-file-pattern = backup-fs
+save-copies-count = 2
+
+[backup-source-params]
+backup-fs-names = /dev/sda6;/dev/sda7
+exclude-files = no
+exclude-pattern = 
+
+[compress-options]
+processor-cores = 2
+partial-backups = no
+compress-level = 5
+part-size = 0
+password = pass
+hash = hash
+
+[restore-options]
+restore-ids=0;1
+remake-fs = no
+fs-type = ext4
+fs-options = -I 256

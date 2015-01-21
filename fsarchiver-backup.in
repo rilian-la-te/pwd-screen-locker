@@ -1,5 +1,133 @@
 #!/usr/bin/python2
 
 import ConfigParser
+import argparse
+import re
+import sys  
+import os
+import shlex,subprocess
+from itertools import izip
+
+reload(sys)  
+sys.setdefaultencoding('utf8')
+
+
+def determine_existence(num, filename, directory):
+    for i in xrange(0,num):
+        fpath = directory+u"/"+filename+"-"+unicode(i)+u".fsa "
+        if not os.path.exists(fpath):
+            return fpath
+    return directory+u"/"+filename+u"-0.fsa "
+    
+def determine_existence_bool(num, filename, directory):
+    for i in xrange(0,num):
+        fpath = directory+u"/"+filename+"-"+unicode(i)+u".fsa "
+        if not os.path.exists(fpath):
+            return fpath
+    return False
+    
+def id_dest_str(ids_list, dest_list, mkfs, fsopt):
+    string = ""
+    for x in izip(ids_list, dest_list):
+        string += u"id="+x[0]+u",dest="+x[1]
+        if (mkfs is not None):
+            string += u"mkfs="+mkfs + u"mkfsopt="+fsopt
+        string += u" "
+    return string
+
+
+def main():
+    build_str=u"fsarchiver "
+    arg = argparse.ArgumentParser()
+    arg.add_argument("-r", "--restore",
+                     help="Restore fs instead of save",
+                     action="store_true")
+    arg.add_argument("-c", "--config",
+                     help="Non-standard config")
+    arg.add_argument("-i", "--id",
+                     help="Starting restore id",
+                     type=int)
+    arg.add_argument("-n", "--number",
+                     help="Backup file number",
+                     type=int)
+    args = arg.parse_args()
+    conf = ConfigParser.SafeConfigParser()
+    if args.config is not None:
+        conf.read([args.config])
+    else:
+        conf.read(['@sysconfdir@/sbs-scripts/fsarchiver-backup.ini'])
+    if args.restore:
+        build_str += u"--cryptpass=" + conf.get("compress-options","password") + u" "
+        build_str += u"restfs "
+        num = conf.getint("backup-dir-settings","save-copies-count")
+        fn = conf.get("backup-dir-settings","save-file-pattern")
+        d = conf.get("backup-dir-settings","save-directory")
+        if args.number is not None:
+            build_str += d+u"/"+fn+u"-"+args.number+".fsa "
+        else:
+            filen_str = determine_existence_bool(num,fn,d)
+            if (not filen_str):
+                quit(1)
+            else:
+                build_str += filen_str
+        mkfs = None
+        fsopt = None
+        if conf.getboolean("restore-options","remake-fs"):
+            mkfs = conf.get("restore-options","fs-type")
+            fsopt = conf.get("restore-options","fs-options")
+        ids = conf.get("restore-options","restore-ids")
+        fs = conf.get("backup-source-params","backup-fs-names")
+        build_str += id_dest_str(ids.split(";"),fs.split(";"),mkfs,fsopt);
+    else:
+        build_str += u"-o -A "
+        if conf.getboolean("backup-source-params","exclude-files"):
+            build_str += (u"--exclude=" +
+                conf.get("backup-source-params","exclude-pattern")) + u" "
+        build_str += u"--jobs=" + unicode(conf.getint("compress-options","processor-cores")) + u" "
+        build_str += u"--compress=" + unicode(conf.getint("compress-options","compress-level")) + u" "
+        build_str += u"--cryptpass=" + conf.get("compress-options","password") + u" "
+        num = conf.getint("backup-dir-settings","save-copies-count")
+        fn = conf.get("backup-dir-settings","save-file-pattern")
+        d = conf.get("backup-dir-settings","save-directory")
+        build_str += u"savefs "
+        build_str += determine_existence(num,fn,d)
+        ids = conf.get("backup-source-params","backup-fs-names")
+        trans_ids = re.sub('[;]', ' ', ids)
+        build_str += trans_ids
+    subprocess.call(shlex.split(build_str))
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+if __name__ == '__main__':
+    main()
 
 
