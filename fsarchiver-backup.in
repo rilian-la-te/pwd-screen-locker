@@ -95,37 +95,6 @@ def main():
         trans_ids = re.sub('[;]', ' ', ids)
         build_str += trans_ids
     subprocess.call(shlex.split(build_str))
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
 if __name__ == '__main__':
     main()
