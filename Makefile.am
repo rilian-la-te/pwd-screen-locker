@@ -1,6 +1,7 @@
 bin_SCRIPTS = pwd-force-locker fsarchiver-backup
 
-dist_sysconf_DATA = fsarchiver-backup.ini
+config_DATA = fsarchiver-backup.ini
+config_dir = $(sysconfdir)/sbs-scripts
 
 if HAVE_SYSTEMD
 systemdsystemunit_DATA = \
