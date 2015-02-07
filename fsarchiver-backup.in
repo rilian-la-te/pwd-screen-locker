@@ -13,17 +13,21 @@ sys.setdefaultencoding('utf8')
 
 
 def determine_existence(num, filename, directory):
+    dictionary = {}
     for i in xrange(0,num):
-        fpath = directory+u"/"+filename+"-"+unicode(i)+u".fsa "
+        fpath = directory+u"/"+filename+"-"+unicode(i)+u".fsa"
         if not os.path.exists(fpath):
-            return fpath
-    return directory+u"/"+filename+u"-0.fsa "
+            return fpath+" "
+        else:
+            dictionary[fpath] = os.path.getmtime(fpath)
+    return sorted(dictionary.keys(), key=lambda k: dictionary[k])[0]+" "
+        
     
 def determine_existence_bool(num, filename, directory):
     for i in xrange(0,num):
-        fpath = directory+u"/"+filename+"-"+unicode(i)+u".fsa "
+        fpath = directory+u"/"+filename+"-"+unicode(i)+u".fsa"
         if not os.path.exists(fpath):
-            return fpath
+            return fpath+" "
     return False
     
 def id_dest_str(ids_list, dest_list, mkfs, fsopt):

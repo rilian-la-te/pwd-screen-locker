@@ -1,5 +1,5 @@
 [backup-dir-settings]
-save-directory = @sharedstatedir@/шашаша
+save-directory = /mnt/backup
 save-file-pattern = backup-fs
 save-copies-count = 2
 
