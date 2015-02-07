@@ -26,7 +26,7 @@ def determine_existence(num, filename, directory):
 def determine_existence_bool(num, filename, directory):
     for i in xrange(0,num):
         fpath = directory+u"/"+filename+"-"+unicode(i)+u".fsa"
-        if not os.path.exists(fpath):
+        if os.path.exists(fpath):
             return fpath+" "
     return False
     
@@ -76,6 +76,7 @@ def main():
         else:
             filen_str = determine_existence_bool(num,fn,d)
             if (not filen_str):
+                sys.stderr.write("Backup file not found.\n")
                 quit(1)
             else:
                 build_str += filen_str
