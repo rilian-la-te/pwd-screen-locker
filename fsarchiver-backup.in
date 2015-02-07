@@ -54,6 +54,9 @@ def main():
     arg.add_argument("-n", "--number",
                      help="Backup file number",
                      type=int)
+    arg.add_argument("-v", "--verbose",
+                     help="verbose output",
+                     action="store_true")
     args = arg.parse_args()
     conf = ConfigParser.SafeConfigParser()
     if args.config is not None:
@@ -61,6 +64,8 @@ def main():
     else:
         conf.read(['@sysconfdir@/sbs-scripts/fsarchiver-backup.ini'])
     if args.restore:
+    	if args.verbose:
+            build_str+=u"-vvv "
         build_str += u"--cryptpass=" + conf.get("compress-options","password") + u" "
         build_str += u"restfs "
         num = conf.getint("backup-dir-settings","save-copies-count")
@@ -84,6 +89,8 @@ def main():
         build_str += id_dest_str(ids.split(";"),fs.split(";"),mkfs,fsopt);
     else:
         build_str += u"-o -A "
+       	if args.verbose:
+            build_str+=u"-vvv "
         if conf.getboolean("backup-source-params","exclude-files"):
             build_str += (u"--exclude=" +
                 conf.get("backup-source-params","exclude-pattern")) + u" "
