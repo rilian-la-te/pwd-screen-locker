@@ -27,5 +27,6 @@ AC_CONFIG_FILES([Makefile
                  pwd-force-locker.service
                  fsarchiver-backup.service
                  fsarchiver-backup
+                 27-udevcrypt.rules
                  fsarchiver-backup.ini])
 AC_OUTPUT

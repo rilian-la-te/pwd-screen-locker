@@ -1,0 +1,1 @@
+ACTION=="add", KERNEL =="sd*", TYPE=="disk", RUN+="@prefix@/bin/cryptcheck"

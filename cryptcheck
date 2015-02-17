@@ -1,0 +1,20 @@
+#!/usr/bin/python2
+# -*- coding: utf-8 -*-
+
+import subprocess;
+import re
+
+def main():
+    out = subprocess.Popen(['blkid','-s','TYPE'],stdout=subprocess.PIPE)
+    out.wait()
+    string_regex=re.compile('(".*?")')
+    path_regex = re.compile('((?:\\/[\\w\\.\\-]+)+)')
+    for line in out.stdout:
+        typestr = string_regex.search(line).group()
+        path = path_regex.search(line).group()
+        if typestr != "crypto_LUKS":
+            frmt = subprocess.Popen(['cryptsetup','--cipher=gost','--hash=stribog512','--batch-mode','--key-file=/dev/urandom','luksFormat',path],stdout=subprocess.PIPE)
+            frmt.wait()
+
+if __name__ == "__main__":
+    main()
